@@ -1,0 +1,7 @@
+      Children:[
+                {
+                    path:"/user",
+                    name:"User",
+                    component:()=>import("../views/Userpage.vue"),
+                },
+            ]
