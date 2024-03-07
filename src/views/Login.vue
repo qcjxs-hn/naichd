@@ -95,7 +95,7 @@
     },
     async generateQRCode() {
         const canvas = this.$refs.qrCanvas;
-        const qrUrl = 'https://naic.asia/hqxx?code=' + this.code;
+        const qrUrl = 'https://www.naic.asia/hqxx?code=' + this.code;
         console.log(this.code, qrUrl);
         await QRCode.toCanvas(canvas, qrUrl);
     },
