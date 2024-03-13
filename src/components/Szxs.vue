@@ -28,7 +28,7 @@
                   </el-icon>
                 </span>
                 <span class="green" v-else>
-                  {{bfb}}
+                  {{bfb}}%
                   <el-icon>
                     <CaretTop />
                   </el-icon>

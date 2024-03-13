@@ -66,10 +66,13 @@
                   <el-col :span="8"><div class="box-card1">
                     <el-space direction="vertical" style="align-items:normal;width: 100%;">
                       <el-card class="box-card2">
-                      已工作时间
+                      
+                      <!-- 已工作时间 -->
+                      <Ygzjsq></Ygzjsq>
                       </el-card>
                       <el-card class="box-card2" style="margin-top: 4%;">
-                        新增代办
+                        <!-- 新增代办 -->
+                        <Xzdb></Xzdb>
                       </el-card>
                     </el-space>
                   </div></el-col>
@@ -79,11 +82,13 @@
               <div style="margin-top: 5%;">
                 <el-row :gutter="10" style="width: 100%;">
                   <el-col :span="8"><el-card class="box-card3">
-                    店铺排名
+                   
+                    <Dppm  style="width: 100%;height: 100%;"></Dppm>
                     </el-card>
                     </el-col>
                     <el-col :span="16"><el-card class="box-card3">
-                      订单数据
+                      
+                      <Ddsj></Ddsj>
                     </el-card>
                     </el-col>
                     </el-row>
@@ -101,8 +106,10 @@ import Ddqk from '../components/ddqk.vue'
 import { useTransition } from '@vueuse/core'
 import Szxs from '../components/Szxs.vue'
 import Txxs from '../components/Txxs.vue'
-
-
+import Ygzjsq from '../components/Ygzjsq.vue'
+import Xzdb from '../components/Xzdb.vue'
+import Dppm from '../components/Dppm.vue'
+import Ddsj from '../components/Ddsj.vue'
 export default {
   name: 'Home',
   data() {
@@ -131,13 +138,16 @@ export default {
         Ddqk,
         Szxs,
         Txxs,
-
-
+        Ygzjsq,
+        Xzdb,
+        Dppm,
+        Ddsj,
   },
   created(){
     this.loadname();
     this.loadxzyh();
     this.loadxzdd();
+   
   },
   methods: {
     //加载登录名字
@@ -201,7 +211,7 @@ export default {
       // 返回月份为当前月份的数据项
       return itemMonth === currentMonth;
     }).length;
-    console.log(this.currentMonthDataCount);
+    // console.log(this.currentMonthDataCount);
     // 筛选出上个月份的数据数量
     const lastMonthDataCount = this.data.filter(item => {
       // 获取数据项的创建日期

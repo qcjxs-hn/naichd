@@ -39,8 +39,7 @@
               <el-button type="primary" v-if="onedd.sfzf==='1'" style="margin-left: 40px;">发送取餐</el-button>
             </div>
             </el-col>
-            <el-col :span="3"
-                      ><div style="margin-top: 120px;">
+            <el-col :span="3" style="padding-left: 0px;" ><div style="margin-top: 120px;">
               <el-button type="primary" @click="youyi"><el-icon><ArrowRightBold /></el-icon></el-button>
               </div>
             </el-col>

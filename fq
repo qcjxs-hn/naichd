@@ -5,3 +5,94 @@
                     component:()=>import("../views/Userpage.vue"),
                 },
             ]
+             // startTimer() {
+    //     console.log(this.isRunning);
+    // if(this.isRunning==false){
+    //   this.isRunning = true;
+    //   this.buttext="休息片刻";
+    //   this.startTime = new Date();
+    //   this.updateTime();
+
+    //     }else{
+    //         this.isRunning = false;
+            
+    //         this.buttext="继续工作";
+    //         // this.startTime=this.js;
+    // //   this.startTime = Date.now();
+    // //   this.updateTime();
+    //     }
+    // },
+    // nnstart(){
+    //     if(this.isRunning==false){
+    //   this.isRunning = true;
+    //   this.buttext="休息片刻";
+    //   console.log(this.js);
+    //   this.startTime =this.js;
+    // //   this.updateTime();
+
+    //     }else{
+    //         this.isRunning = false;
+            
+    //         this.buttext="继续工作";
+    //         this.startTime=this.js;
+    // //   this.startTime = Date.now();
+    // //   this.updateTime();
+    //     }
+    // },
+    // updateTime() {
+    //   if (this.isRunning) {
+    //     console.log(this.currentTime);
+    //     this.js=this.startTime;
+    //     this.currentTime = Date.now();
+    //     setTimeout(this.updateTime, 1000);
+    //   }
+    // },
+    // pad(number) {
+    //   return number.toString().padStart(2, '0');
+    // }
+        // formattedTime() {
+    //   if (this.startTime && this.currentTime) {
+    //     const elapsedTime = this.currentTime - this.startTime;
+    //     const hours = Math.floor(elapsedTime / 3600000);
+    //     const minutes = Math.floor((elapsedTime % 3600) / 60);
+    //     const seconds = Math.floor((elapsedTime % 60000) / 1000);
+    //     return `${this.pad(hours)+"小时"}${this.pad(minutes)+"分"}${this.pad(seconds)+'秒'}`;
+    //   } else {
+    //     return '00小时00分00秒';
+    //   }
+    // }
+        // 在组件创建时启动更新时间的方法\
+    // this.isRunning=true;
+    // this.timerRunning=true;
+
+
+
+        // // 设置 cookie
+    // setCookie(name, value, days) {
+    //   const date = new Date();
+    //   var expires = 'expires=';
+    //   date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+    //   expires+= date.toUTCString();
+    //   if(this.getCookie('workingTime')){
+    //     console.log(this.getCookie('workingTime'));
+    //     this.setTime();
+    //   }
+    //   document.cookie = name + '=' + value + ';' + expires + ';path=/';
+    // },
+
+    // 获取 时间
+    getCookie(name) {
+        const cname = name + '=';
+        const decodedCookie = decodeURIComponent(document.cookie);
+        const ca = decodedCookie.split(';');
+        for (let i = 0; i < ca.length; i++) {
+          let c = ca[i];
+          while (c.charAt(0) == ' ') {
+            c = c.substring(1);
+          }
+          if (c.indexOf(cname) == 0) {
+            return c.substring(cname.length, c.length);
+          }
+        }
+        return '';
+      },

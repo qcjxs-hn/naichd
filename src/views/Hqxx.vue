@@ -1,9 +1,9 @@
 <template>
 
-  <div>
-    <a>{{code}}:{{hashCode}}</a>
+  <div style="width: 100%;height: 100%;">
+    <!-- <a>{{code}}:{{hashCode}}</a> -->
 
-    <el-button style="margin-top: 10%;margin-left: 2%;" size="large" type="primary" @click="Login">一键登录</el-button>
+    <el-button style="margin-top: 80%;margin-left: 19%; width: 240px;" size="large" type="primary" @click="Login">一键登录</el-button>
   </div>
 </template>
 <script>
