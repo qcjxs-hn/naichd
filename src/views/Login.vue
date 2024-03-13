@@ -95,11 +95,7 @@
     },
     async generateQRCode() {
         const canvas = this.$refs.qrCanvas;
-<<<<<<< HEAD
-        // const qrUrl = 'https://naic.asia/hqxx?code=' + this.code;
-=======
         const qrUrl = 'https://www.naic.asia/hqxx?code=' + this.code;
->>>>>>> b4d948b5c2a85fb5847ec299ef09a38b46171ca5
         console.log(this.code, qrUrl);
         await QRCode.toCanvas(canvas, qrUrl);
     },
