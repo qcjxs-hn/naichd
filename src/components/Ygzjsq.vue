@@ -51,11 +51,6 @@
       this.workingTime++;
       if(localStorage.getItem('workingTime')){
         if(localStorage.getItem('starttime')==null){
-                  // 获取当前时间的年、月和日
-        const currentDate = new Date();
-        const year = currentDate.getFullYear(); // 获取年份
-        const month = currentDate.getMonth() + 1; // 获取月份，注意月份是从 0 开始计数的，所以要加 1
-        const day = currentDate.getDate(); // 获取日期
         // console.log(year,month,day);
         var starttime = Math.round((new Date().getTime() + 8 * 60 * 60 * 1000) / 1000);
         localStorage.setItem('starttime', starttime);
@@ -128,14 +123,8 @@
     //  console.log(timestamp);
     //  console.log(currentTime);
     if(currentTime>=1){
-      // console.log("2");
       this.workingTime=0;
-          // 获取当前时间的年、月和日
-      const currentDate = new Date();
-      const year = currentDate.getFullYear(); // 获取年份
-      const month = currentDate.getMonth() + 1; // 获取月份，注意月份是从 0 开始计数的，所以要加 1
-      const day = currentDate.getDate(); // 获取日期
-      console.log(year,month,day);
+
       var starttime = Math.round((new Date().getTime() + 8 * 60 * 60 * 1000) / 1000);
       localStorage.setItem('starttime', starttime);
      localStorage.removeItem("workingTime");

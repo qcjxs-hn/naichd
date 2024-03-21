@@ -15,6 +15,8 @@
   },
         created()
     {
+        this.setTime();
+        this.setdlTime();
         if ( localStorage.getItem("user")!=null) {
             this.$router.push('/home')
         }
@@ -24,42 +26,48 @@
         }
     },
     methods: {
-        //设置工作过期时间
+          //设置工作过期时间
     secondToDate(second) {
     if (!second) {
     return 0;
     }
-    var time = new Array(0, 0, 0, 0, 0);
-    time[0]=0;
+    var time = 0;
     if (second >= 24 * 3600) {
-    time[1] = parseInt(second / (24 * 3600));
+    time= parseInt(second / (24 * 3600));
     second %= 24 * 3600;
     }
-    if (second >= 3600) {
-    time[2] = parseInt(second / 3600);
-    second %= 3600;
-    }
-    if (second >= 60) {
-    time[3] = parseInt(second / 60);
-    second %= 60;
-    }
-    if (second > 0) {
-    time[4] = second;
-    }
-    //alert(time);
     return time;
     },
     setTime() {
-    var starttime = Math.round(new Date(Date.UTC(2021, 7, 18, 0, 0, 0)).getTime() / 1000);
-    var timestamp = Math.round((new Date().getTime() + 8 * 60 * 60 * 1000) / 1000);
-    //alert(starttime);
-    //alert(timestamp);
-    //alert(timestamp - starttime);
-    currentTime = secondToDate((timestamp - starttime));
-    if(currentTime>=1){
-        localStorage.setItem('workingTime')
+    var starttime = localStorage.getItem('starttime');
+    if (starttime == null) {
+        starttime = Math.round((new Date().getTime() + 8 * 60 * 60 * 1000) / 1000);
+        localStorage.setItem('starttime', starttime);
     }
-    },   
+    var timestamp = Math.round((new Date().getTime() + 8 * 60 * 60 * 1000) / 1000);
+     var currentTime = this.secondToDate((timestamp - starttime));
+    if(currentTime>=1){
+      var starttime = Math.round((new Date().getTime() + 8 * 60 * 60 * 1000) / 1000);
+      localStorage.setItem('starttime', starttime);
+     localStorage.removeItem("workingTime");
+    }
+    },  
+      //设置登录过期时间
+      setdlTime() {
+        var starttime = localStorage.getItem('startdltime');
+            if (starttime == null) {
+                starttime = Math.round((new Date().getTime() + 8 * 60 * 60 * 1000) / 1000);
+                localStorage.setItem('startdltime', starttime);
+            }
+    var timestamp = Math.round((new Date().getTime() + 8 * 60 * 60 * 1000) / 1000);
+     var currentTime = this.secondToDate((timestamp - starttime));
+     console.log(currentTime);
+    if(currentTime>=3){
+      var starttime = Math.round((new Date().getTime() + 8 * 60 * 60 * 1000) / 1000);
+      localStorage.setItem('startdltime', starttime);
+     localStorage.removeItem("user");
+    }
+      }
     }
     }
    

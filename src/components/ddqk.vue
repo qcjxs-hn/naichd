@@ -79,6 +79,7 @@ export default {
             // 调用接口
             this.userdl=JSON.parse(localStorage.getItem("user"));
             if(this.userdl!=null){
+            if(this.userdl.userzt=='3'){
             request.get("/nc/superselall?u="+this.userdl.user).then(res =>{
                 if(res.code=='200'){
                     // console.log(res);
@@ -94,6 +95,26 @@ export default {
                     console.log(this.jl);
                 }
             });
+        }else if (this.userdl.userzt == "1") {
+                        this.userdp = JSON.parse(localStorage.getItem("shop"));
+                        if (this.userdp != null) {
+                            request.get("/nc/seldd?d=" + this.userdp.dpmc).then(res => {
+                                if (res.code == '200') {
+                                    this.dd=res.data;
+                                    this.onedd=this.dd[0];
+                                    if(JSON.parse(this.onedd.shoppingcar).length>1){
+                                        this.xl=true;
+                                    }else{
+                                        this.xl=false;
+                                    }
+                                    this.shopcar=JSON.parse(this.onedd.shoppingcar)[0];
+                                    this.jl=this.shopcar.jl;
+                                    console.log(this.jl);
+                                  
+                                }
+                            })
+                        }
+                    }
         }
         },
         // 上一单

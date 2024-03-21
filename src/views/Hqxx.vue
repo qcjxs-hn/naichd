@@ -99,6 +99,11 @@
                 type: 'warning',
               })
             }
+          }else{
+            ElMessage({
+                message: '网络错误超时！',
+                type: 'error',
+              })
           }
           
         })

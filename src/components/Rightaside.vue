@@ -19,16 +19,18 @@
                 ></el-calendar>
               </div>
             </el-card>
-        <el-card style="margin-top: 2%;">
-          <ul v-infinite-scroll="load" class="infinite-list" style="overflow: auto">
-            <li v-for="i in count" :key="i" class="infinite-list-item">{{ i }}</li>
-          </ul>
+        <el-card v-if="userdl.userzt==='3'"  style="margin-top: 2%;">
+          <el-text tag="b" size="large" style="color: rgb(239, 241, 241);">展播栏(可滚动) </el-text>
+          <Szzbl></Szzbl>
+        </el-card>
+        <el-card v-else style="margin-top: 2%;height: 353px;">
+          <el-tag tag="b" type="error" size="large" style="margin-top: 50%;margin-left: 20%;">权限不够，无法修改展播栏 </el-tag>
         </el-card>
         </el-card>
     </div>
 </template>
 <script>
-
+import Szzbl from '../components/Szzbl.vue';
 export default {
     name:'Rightaside',
     data() {
@@ -40,9 +42,16 @@ export default {
         { date: new Date(2024, 10, 11), type: "warning", content: "光棍节" },
       ],
       count:1,
+      userdl:[],
        
     }
    
+  },
+  created(){
+    this.userdl = JSON.parse(localStorage.getItem("user"));
+  },
+  components: {
+    Szzbl,
   },
   computed: {
     displayDate() {

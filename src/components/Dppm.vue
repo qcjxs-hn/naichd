@@ -49,7 +49,7 @@
             
             this.jsq = setInterval(() => {
                 this.loadxzdd();
-            }, 2000);
+            }, 5000);
         },
         methods: {
             //绘制
@@ -120,12 +120,25 @@
                 loadxzdd(){
                 this.userdl=JSON.parse(localStorage.getItem("user"));
                         if(this.userdl!=null){
+                            if(this.userdl.userzt=='3'){
                         request.get("/nc/superselall?u="+this.userdl.user).then(res =>{
                             if(res.code=='200'){
                             this.datadd=res.data;
                             this.jsqnb();
                     }
                 })
+            } 
+            else if(this.userdl.userzt=="1"){
+                this.userdp=JSON.parse(localStorage.getItem("shop"));
+                if(this.userdp!=null){
+                request.get("/nc/superselall?u=superadmin").then(res =>{
+                            if(res.code=='200'){
+                            this.datadd=res.data;
+                            this.jsqnb();
+                    }
+                })
+            }
+            }
                 }
                 },
                 // 计时器

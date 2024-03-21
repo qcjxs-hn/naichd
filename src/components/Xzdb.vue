@@ -25,13 +25,23 @@
                 </el-col>
                         </el-row>
                     </div>
+                    <div v-else-if="it.split(';')[1]=='奶茶'" >
+                        <el-row>  
+                            <el-col :span="2">
+                    <el-icon ><MilkTea /></el-icon>
+                </el-col>
+                <el-col :span="22">
+                    <el-link :underline="false"  style="font-size: 12px;" class="mx-1" type="primary">{{it.split(';')[0]+gml+it.split(';')[1]+gml2}}</el-link>
+                </el-col>
+                        </el-row>
+                    </div>
                     <div v-else>
                         <el-row>  
                             <el-col :span="2">
                         <el-icon><Link /></el-icon>
                     </el-col>
                     <el-col :span="22">
-                    <el-link :underline="false" style="font-size: 12px;"  class="mx-1" type="primary">{{it.split(';')[0]+dpbdwz+dpbdwz2}}</el-link>
+                    <el-link @click="tzdpdy()" :underline="false" style="font-size: 12px;"  class="mx-1" type="primary">{{it.split(';')[0]}}{{dpbdwz}}{{it.split(';')[1]}},{{dpbdwz2}}</el-link>
                 </el-col>
             </el-row>
                 </div>
@@ -54,13 +64,23 @@
                 </el-col>
                         </el-row>
                     </div>
+                    <div v-else-if="it.split(';')[1]=='奶茶'" >
+                        <el-row>  
+                            <el-col :span="2">
+                    <el-icon ><MilkTea /></el-icon>
+                </el-col>
+                <el-col :span="22">
+                    <el-link :underline="false"  style="font-size: 12px;" class="mx-1" type="primary">{{it.split(';')[0]+gml+it.split(';')[1]+gml2}}</el-link>
+                </el-col>
+                        </el-row>
+                    </div>
                     <div v-else>
                         <el-row>  
                             <el-col :span="2">
                         <el-icon><Link /></el-icon>
                     </el-col>
                     <el-col :span="22">
-                    <el-link :underline="false" style="font-size: 16px;"  class="mx-1" type="primary">{{it.split(';')[0]+dpbdwz+dpbdwz2}}</el-link>
+                    <el-link @click="tzdpdy()" :underline="false" style="font-size: 16px;"  class="mx-1" type="primary">{{it.split(';')[0]}}{{dpbdwz}}{{it.split(';')[1]}},{{dpbdwz2}}</el-link>
                 </el-col>
             </el-row>
                 </div>
@@ -72,8 +92,9 @@
 </template>
 <script>
     import request from '../../utils/requestf';
-    import { User,Link
+    import { User,Link,MilkTea
 } from '@element-plus/icons-vue'
+import { ElNotification } from 'element-plus'
     export default {
         data() {
             return {
@@ -87,6 +108,8 @@
                 glyzcwz2:'账号等待同意！',
                 dpbdwz:'绑定店铺',
                 dpbdwz2:'店铺等待审核！',
+                gml:'购买了',
+                gml2:',请尽快出餐！',
                 isPopupVisible: false,
             }
         },
@@ -95,16 +118,19 @@
             Link,
         },
         mounted() {
-            console.log('Component mounted.')
+          
         },
         created(){
             this.loadxzcgly();
+
         },
         methods: {
             loadxzcgly(){
                 // 加载数据
             this.userdl=JSON.parse(localStorage.getItem("user"));
             if(this.userdl!=null){
+                // 判断权限
+                if (this.userdl.userzt == '3') {
             request.get("/user/superselalluser?u="+this.userdl.user).then(res =>{
                 if(res.code=='200'){
                   // console.log(res.data);
@@ -122,12 +148,28 @@
                   this.data2=res2.data;
                   for(var i=0;i<this.data2.length;i++){
                       if(this.data2[i].dpzt=="0"){
-                        this.dbuserz.push(this.data2[i].user+';'+"店铺");
+                        this.dbuserz.push(this.data2[i].user+';'+this.data2[i].dpmc);
                       }
                   }
                 //   console.log(this.dbuserz);
                 }
             });
+        }else if(this.userdl.userzt==="1"){
+            this.userdp = JSON.parse(localStorage.getItem("shop"));
+                        if (this.userdp != null) {
+                            request.get("/nc/seldd?d=" + this.userdp.dpmc).then(res => {
+                                if (res.code == '200') {
+                                    this.data3 = res.data;
+                                    for(var i=0;i<this.data3.length;i++){
+                                        if(this.data3[i].sfzf=="1"){
+                                            this.dbuserz.push(this.data3[i].buyuser+';'+"奶茶");
+                                            // this.ddtz();
+                                        }
+                                    }
+                                }
+                            })
+                        }
+        }
             }
             },
             // 打开或者关闭模态框
@@ -140,6 +182,19 @@
             // 跳转User界面
             tzuser(){
                 this.$router.push('/user');
+            },
+            // 跳转店铺对应界面
+            tzdpdy(){
+                this.$router.push('/dystore');
+            },
+              // 订单通知
+              ddtz(){
+                ElNotification({
+                    title: 'Success',
+                    message: 'This is a success message',
+                    type: 'success',
+                    duration: 0,
+                })
             }
         }
     }

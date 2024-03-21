@@ -15,10 +15,10 @@
     </div>
 </template>
 <script>
-      import * as echarts from 'echarts';
-      import request from '../../utils/requestf';
-      
-import { format } from 'date-fns';
+    import * as echarts from 'echarts';
+    import request from '../../utils/requestf';
+
+    import { format } from 'date-fns';
     export default {
         name: 'Ddsj',
         data() {
@@ -26,23 +26,23 @@ import { format } from 'date-fns';
                 ti: '订单数据',
                 chartDom: null,
                 myChart: null,
-                data:[],
+                data: [],
                 dataddd: [],
-                   // 原始数据
+                // 原始数据
                 originalData: [],
 
-                    // 按日期分类后的数据
+                // 按日期分类后的数据
                 dataByMonth: {},
                 //日期数组
-                datez:[],
+                datez: [],
                 //已取消数据
-                yqxdata:[],
+                yqxdata: [],
                 //已支付数据
-                yzfdata:[],
+                yzfdata: [],
                 //取餐中数据
-                qczdata:[],
+                qczdata: [],
                 //已完成数据
-                ywcdata:[],
+                ywcdata: [],
             }
         },
         created() {
@@ -54,16 +54,20 @@ import { format } from 'date-fns';
             if (this.chartDom) {
                 this.myChart = echarts.init(this.chartDom);
             }
-            
+
             this.jsq = setInterval(() => {
                 this.loadxzdd();
-            }, 2000);
+
+            }, 5000);
+        },
+        beforeDestroy() {
+            clearInterval(this.jsq);
         },
         methods: {
             huizhi() {
                 this.data = this.dataddd
                 this.groupDataByMonth(this.data);
-                
+
                 this.processMonthData();
                 // 定义一个对象，用于记录名称及其数量
                 const nameCount = {};
@@ -114,7 +118,7 @@ import { format } from 'date-fns';
                             axisLabel: {
                                 width: 500,
                                 fontSize: 8,
-                                },
+                            },
                             data: this.datez,
                         }
                     ],
@@ -237,22 +241,34 @@ import { format } from 'date-fns';
                 };
                 this.myChart.setOption(option);
                 // 避免一直增长
-                this.datez=[];
-                this.yqxdata=[];
-                this.yzfdata=[];
-                this.qczdata=[];
-                this.ywcdata=[];
+                this.datez = [];
+                this.yqxdata = [];
+                this.yzfdata = [];
+                this.qczdata = [];
+                this.ywcdata = [];
             },
             // 新增订单
             loadxzdd() {
                 this.userdl = JSON.parse(localStorage.getItem("user"));
                 if (this.userdl != null) {
-                    request.get("/nc/superselall?u=" + this.userdl.user).then(res => {
-                        if (res.code == '200') {
-                            this.dataddd = res.data;
-                            this.jsqnb();
+                    if (this.userdl.userzt == '3') {
+                        request.get("/nc/superselall?u=" + this.userdl.user).then(res => {
+                            if (res.code == '200') {
+                                this.dataddd = res.data;
+                                this.jsqnb();
+                            }
+                        })
+                    } else if (this.userdl.userzt == "1") {
+                        this.userdp = JSON.parse(localStorage.getItem("shop"));
+                        if (this.userdp != null) {
+                            request.get("/nc/seldd?d=" + this.userdp.dpmc).then(res => {
+                                if (res.code == '200') {
+                                    this.dataddd = res.data;
+                                    this.jsqnb();
+                                }
+                            })
                         }
-                    })
+                    }
                 }
             },
 
@@ -262,126 +278,127 @@ import { format } from 'date-fns';
 
             },
             // =========数据处理======
-             // 将数据按月份分类
+            // 将数据按月份分类
             groupDataByMonth(data) {
                 // console.log(data);
-            this.originalData=data;
-            this.originalData.forEach(item => {
-                // 获取日期所在月份
-                const month = format(new Date(item.createdate), 'yyyy-MM-dd');
+                this.originalData = data;
+                this.originalData.forEach(item => {
+                    // 获取日期所在月份
+                    const month = format(new Date(item.createdate), 'yyyy-MM-dd');
 
-                // 如果该月份数据不存在，则初始化为一个数组
-                if (!this.dataByMonth[month]) {
-                this.dataByMonth[month] = [];
-                }else{
-                // 将数据添加到对应月份的数组中
-                const exists = this.dataByMonth[month].some(existingItem => existingItem.createid === item.createid);
-                if (!exists) {
-                this.dataByMonth[month].push(item);
-                }
-            }
-            });
+                    // 如果该月份数据不存在，则初始化为一个数组
+                    if (!this.dataByMonth[month]) {
+                        this.dataByMonth[month] = [];
+                    } else {
+                        // 将数据添加到对应月份的数组中
+                        const exists = this.dataByMonth[month].some(existingItem => existingItem.createid === item.createid);
+                        if (!exists) {
+                            this.dataByMonth[month].push(item);
+                        }
+                    }
+                });
             },
             // 处理每个月份的数据
             processMonthData() {
 
-                var yqxdata=[];
-                var yzfdata=[];
-                var qczdata=[];
-                var ywcdata=[];
-                var i=0;
-                var i2=0;
-                var i3=0;
-                var i4=0;
-            for (const month in this.dataByMonth) {
-                // 对该月份的数据进行处理，可以根据具体需求自行编写逻辑
-                const monthData = this.dataByMonth[month];
-                var yqxz=0;
-                var yzfz=0;
-                var qczz=0;
-                var ywcz=0;
-                this.datez.push(month);
-                for (let index = 0; index <monthData.length; index++) {
-                    const element = monthData[index];
-                    if(element.sfzf==="0"){
-                        console.log(i);
-                        if(yqxdata[i]==null  ){
-                            yqxdata[i]=0
+                var yqxdata = [];
+                var yzfdata = [];
+                var qczdata = [];
+                var ywcdata = [];
+                var i = 0;
+                var i2 = 0;
+                var i3 = 0;
+                var i4 = 0;
+                for (const month in this.dataByMonth) {
+                    // 对该月份的数据进行处理，可以根据具体需求自行编写逻辑
+                    const monthData = this.dataByMonth[month];
+                    var yqxz = 0;
+                    var yzfz = 0;
+                    var qczz = 0;
+                    var ywcz = 0;
+                    this.datez.push(month);
+                    for (let index = 0; index < monthData.length; index++) {
+                        const element = monthData[index];
+                        if (element.sfzf === "0") {
+                            // console.log(i);
+                            if (yqxdata[i] == null) {
+                                yqxdata[i] = 0
+                            }
+                            yqxz = yqxdata[i] + 1;
+                            // console.log(yqxz);
+                            yqxdata[i] = yqxz;
+                        } else {
+                            if (yqxdata[i] == null) {
+                                yqxdata[i] = 0
+                            }
                         }
-                        yqxz=yqxdata[i]+1;
-                        // console.log(yqxz);
-                        yqxdata[i]=yqxz;
-                    }else{
-                        if(yqxdata[i]==null  ){
-                            yqxdata[i]=0
+                        if (element.sfzf === "1") {
+                            if (yzfdata[i2] == null) {
+                                yzfdata[i2] = 0
+                            }
+                            yzfz = yzfdata[i2] + 1;
+                            yzfdata[i2] = yzfz;
+                           
+
+                        } else {
+                            if (yzfdata[i2] == null) {
+                                yzfdata[i2] = 0
+                            }
+                        }
+                        if (element.sfzf === "2") {
+                            if (qczdata[i3] == null) {
+                                qczdata[i3] = 0
+                            }
+                            qczz = qczdata[i3] + 1;
+                            qczdata[i3] = qczz;
+
+                        } else {
+                            if (qczdata[i3] == null) {
+                                qczdata[i3] = 0
+                            }
+                        }
+                        if (element.sfzf === "3") {
+                            if (ywcdata[i4] == null) {
+                                ywcdata[i4] = 0
+                            }
+                            ywcz = ywcdata[i4] + 1;
+                            ywcdata[i4] = ywcz;
+                        } else {
+                            if (ywcdata[i4] == null) {
+                                ywcdata[i4] = 0
+                            }
                         }
                     }
-                     if(element.sfzf==="1"){
-                        if(yzfdata[i2]==null){
-                            yzfdata[i2]=0
-                        }
-                            yzfz=yzfdata[i2]+1;
-                        yzfdata[i2]=yzfz;
-                        
-                    }else{
-                        if(yzfdata[i2]==null){
-                            yzfdata[i2]=0
-                        }
-                    }
-                    if(element.sfzf==="2")
-                    {
-                        if(qczdata[i3]==null){
-                            qczdata[i3]=0
-                        }
-                        qczz=qczdata[i3]+1;
-                        qczdata[i3]=qczz;
-                        
-                    }else{
-                        if(qczdata[i3]==null){
-                            qczdata[i3]=0
-                        }
-                    }
-                    if(element.sfzf==="3"){
-                        if(ywcdata[i4]==null){
-                            ywcdata[i4]=0
-                        }
-                        ywcz=ywcdata[i4]+1;
-                        ywcdata[i4]=ywcz;
-                    }else{
-                        if(ywcdata[i4]==null){
-                            ywcdata[i4]=0
-                        }
-                    }
+                    i++;
+                    i2++;
+                    i3++;
+                    i4++;
+                    // console.log(i);
+                    // console.log(`Month: ${month}`);
+
+
+                    // console.log(monthData);
+                    // 在这里可以进行统计、渲染等操作
                 }
-                i++;
-                i2++;
-                i3++;
-                i4++;
-                console.log(i);
-                console.log(`Month: ${month}`);
-                
-             
-                console.log(monthData);
-                // 在这里可以进行统计、渲染等操作
-            }
-            this.yqxdata=yqxdata;
-            this.yzfdata=yzfdata;
-            this.qczdata=qczdata;
-            this.ywcdata=ywcdata;
-            console.log("已取消",yqxdata);
-                console.log("已支付",yzfdata);
-                console.log("取餐中",qczdata);
-                console.log("已完成",ywcdata);
-            yqxdata=[];
-            yzfdata=[];
-            qczdata=[];
-            ywcdata=[];
-            console.log(this.datez.length);
-            i=0;
-                i2=0;
-                i3=0;
-                i4=0;
+                this.yqxdata = yqxdata;
+                this.yzfdata = yzfdata;
+                this.qczdata = qczdata;
+                this.ywcdata = ywcdata;
+                // console.log("已取消",yqxdata);
+                //     console.log("已支付",yzfdata);
+                //     console.log("取餐中",qczdata);
+                //     console.log("已完成",ywcdata);
+                yqxdata = [];
+                yzfdata = [];
+                qczdata = [];
+                ywcdata = [];
+                // console.log(this.datez.length);
+                i = 0;
+                i2 = 0;
+                i3 = 0;
+                i4 = 0;
             },
+          
         }
     }
 </script>

@@ -13,6 +13,8 @@
         <div style="text-align: center;" v-else>
           <p>登录成功！</p>
           <p>欢迎您，{{ userName }}</p>
+          <!-- <p>{{dpzt}}</p> -->
+          <el-text class="mx-1" type="primary">{{dpzt}}</el-text>
         </div>
       </el-main>
       <el-main v-if="qh=='1'" >
@@ -71,6 +73,7 @@
             passwordjm:'',
             dbwzxs:'管理员登录',
             dibwzxs:'超级管理员登录',
+            dpzt:'',
         };
     },
     async created(){
@@ -112,6 +115,12 @@
                   this.dl=res2.data.data;
                   this.loggedIn=true;
                   this.show=false;
+                  this.$message({
+                          message: '登录成功！',
+                          type: 'success',
+                      });
+                  var starttime = Math.round((new Date().getTime() + 8 * 60 * 60 * 1000) / 1000);
+                  localStorage.setItem('startdltime', starttime);
                   localStorage.setItem("user",JSON.stringify(res2.data.data))
                   clearInterval(this.intervalId);
                   //是否有昵称
@@ -120,7 +129,41 @@
                   }else{
                     this.userName=res2.data.data.user;
                   }
-                  this.$router.push('/home')
+                  // 查询是否绑定店铺
+                  request.get("/dy/selbyuser?u="+res2.data.data.user).then((res3) => {
+                    if(res3.code=="200"){
+                      if(res3.data.data!=null){
+                        if(res3.data.data.dpzt==="2"){
+                        this.$router.push('/home');
+                        localStorage.setItem("shop",JSON.stringify(res3.data.data))
+                        }else if(res3.data.data.dpzt==="1"){
+                          ElMessage({
+                          message: "店铺绑定审核未通过！请修改！",
+                          type: 'error',
+                           })
+                           this.dpzt="店铺绑定审核未通过！请修改！";
+                          
+                        }else if(res3.data.data.dpzt==="0"){
+                          ElMessage({
+                          message: "店铺绑定审核中！",
+                          type: 'warning',
+                           })
+                           this.dpzt="店铺绑定审核中！";
+                        }
+                      }else{
+                        ElMessage({
+                          message: res3.data.msg,
+                          type: 'warning',
+                          
+                        })
+                       setTimeout(() => {
+                        this.tzdpdb();
+                       }, 5000);
+                        this.dpzt=res3.data.msg;
+                        
+                      }
+                    }
+                  });
                 }
               }
             })
@@ -186,6 +229,8 @@
                           message: '登录成功！',
                           type: 'success',
                       });
+                      var starttime = Math.round((new Date().getTime() + 8 * 60 * 60 * 1000) / 1000);
+                      localStorage.setItem('startdltime', starttime);
                       this.dl=res1.data.data;
                                         //是否有昵称
                         if(res1.data.data.nickname!=""){
@@ -202,10 +247,19 @@
                     // this.$router.push("/index")
                     }
                     
+                  }else{
+                    this.$message({
+                          message: "超时！",
+                          type: 'error',
+                      });
                   }
                 })
             }
 
+    },
+    //跳转店铺绑定
+    tzdpdb(){
+      this.$router.push('/dpbd');
     }
   }
 }
