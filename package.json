@@ -8,6 +8,7 @@
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
+    "@stomp/stompjs": "^7.0.0",
     "@vueuse/core": "^10.9.0",
     "axios": "^1.6.7",
     "canvas": "^2.11.2",
@@ -17,9 +18,14 @@
     "element-plus": "^2.5.6",
     "md5": "^2.3.0",
     "qrcode": "^1.5.3",
+    "sockjs-client": "^1.6.1",
+    "stompjs": "^2.3.3",
     "uuid": "^9.0.1",
     "vue": "^3.2.13",
     "vue-router": "^4.3.0",
+    "vue-stomp": "^0.0.5",
+    "websocket": "^1.0.34",
+    "ws": "^8.16.0",
     "xlsx": "^0.18.5"
   },
   "devDependencies": {

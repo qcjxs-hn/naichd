@@ -60,9 +60,7 @@
 
             }, 5000);
         },
-        beforeDestroy() {
-            clearInterval(this.jsq);
-        },
+       
         methods: {
             huizhi() {
                 this.data = this.dataddd

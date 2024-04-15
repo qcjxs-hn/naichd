@@ -121,7 +121,7 @@
                       });
                   var starttime = Math.round((new Date().getTime() + 8 * 60 * 60 * 1000) / 1000);
                   localStorage.setItem('startdltime', starttime);
-                  localStorage.setItem("user",JSON.stringify(res2.data.data))
+                 
                   clearInterval(this.intervalId);
                   //是否有昵称
                   if(res2.data.data.nickname!=""){
@@ -135,6 +135,7 @@
                       if(res3.data.data!=null){
                         if(res3.data.data.dpzt==="2"){
                         this.$router.push('/home');
+                        localStorage.setItem("user",JSON.stringify(res2.data.data))
                         localStorage.setItem("shop",JSON.stringify(res3.data.data))
                         }else if(res3.data.data.dpzt==="1"){
                           ElMessage({
@@ -142,8 +143,12 @@
                           type: 'error',
                            })
                            this.dpzt="店铺绑定审核未通过！请修改！";
-                          
+                           localStorage.setItem("user",JSON.stringify(res2.data.data))
+                           setTimeout(() => {
+                        this.tzdpdb(2);
+                       }, 5000);
                         }else if(res3.data.data.dpzt==="0"){
+
                           ElMessage({
                           message: "店铺绑定审核中！",
                           type: 'warning',
@@ -156,8 +161,9 @@
                           type: 'warning',
                           
                         })
+                        localStorage.setItem("user",JSON.stringify(res2.data.data))
                        setTimeout(() => {
-                        this.tzdpdb();
+                        this.tzdpdb(1);
                        }, 5000);
                         this.dpzt=res3.data.msg;
                         
@@ -258,8 +264,8 @@
 
     },
     //跳转店铺绑定
-    tzdpdb(){
-      this.$router.push('/dpbd');
+    tzdpdb(id){
+      this.$router.push('/dpbd?id='+id);
     }
   }
 }

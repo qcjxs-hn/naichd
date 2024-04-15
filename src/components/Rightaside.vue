@@ -19,7 +19,7 @@
                 ></el-calendar>
               </div>
             </el-card>
-        <el-card v-if="userdl.userzt==='3'"  style="margin-top: 2%;">
+        <el-card v-if="userdl!=null&&userdl.userzt==='3'"  style="margin-top: 2%;">
           <el-text tag="b" size="large" style="color: rgb(239, 241, 241);">展播栏(可滚动) </el-text>
           <Szzbl></Szzbl>
         </el-card>

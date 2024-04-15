@@ -2,6 +2,7 @@
 
 
   <div>
+    <Message></Message>
     <el-space direction="vertical" style="align-items:normal;width: 100%;">
       <!-- 盒子顶部栏 -->
       <div>
@@ -232,6 +233,8 @@
 </template>
 <script>
   import request from '../../utils/requestf';
+  import Message from '../components/Messages.vue'
+
   import { ElMessage } from 'element-plus'
   import {
     Search,
@@ -251,6 +254,7 @@
       return {
         username: '',
         userdl: [],
+        shop:[],
         visible:false,
         source: 0,
         cardwz0: '新增用户',
@@ -294,6 +298,7 @@
       Xzdb,
       Dppm,
       Ddsj,
+      Message,
     },
     created() {
       this.loadname();
@@ -305,11 +310,19 @@
       //加载登录名字
       loadname() {
         this.userdl = JSON.parse(localStorage.getItem("user"));
-
+        
         console.log(this.userdl);
+       
         if (this.userdl != null) {
           this.username = this.userdl.user;
+          if(this.userdl.userzt==="1"){
+            this.shop=JSON.parse(localStorage.getItem("shop"));
+            if(this.shop==null){
+                  this.$router.push("/login");
+                }
+          }
         } else {
+         
           this.$router.push("/login");
         }
       },
@@ -318,11 +331,14 @@
       },
       // 判断管理员
       pdgly(){
+        if(this.userdl!=null){
         return this.userdl.userzt==="3"?"超级管理员":"管理员";
+        }
       },
       // 退出登录
       tcdl(){
         localStorage.setItem("user",null);
+        localStorage.removeItem("shop")
         this.$router.push("/login");
       },
       // 加载新增用户

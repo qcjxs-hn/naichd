@@ -36,7 +36,7 @@
                  
               </el-descriptions>
               <el-tag  size="large" >{{getExtraText(onedd.sfzf)}}</el-tag>
-              <el-button type="primary" v-if="onedd.sfzf==='1'" style="margin-left: 40px;">发送取餐</el-button>
+              <el-button @click="fsqc(onedd.createid)" type="primary" v-if="onedd.sfzf==='1'" style="margin-left: 40px;">发送取餐</el-button>
             </div>
             </el-col>
             <el-col :span="3" style="padding-left: 0px;" ><div style="margin-top: 120px;">
@@ -72,6 +72,14 @@ export default {
     },
     created() {
         this.loaddd();
+    },
+    mounted(){
+        this.jsq = setInterval(() => {
+            this.loaddd();
+        }, 5000);
+    },
+    beforeDestroy() {
+        clearInterval(this.jsq);
     },
     methods:{
         // 加载订单
@@ -165,6 +173,23 @@ export default {
 				  }
 			      return wz;
 			    },
+                // 发送取餐
+                fsqc(ddid){
+                    request.post("/nc/fsqc?i="+ddid).then(res =>{
+                        if(res.code=='200'){
+                            this.$message({
+                                type: 'success',
+                                message: '发送成功!'
+                            })
+                            this.loaddd();
+                        }else{
+                            this.$message({
+                                type: 'error',
+                                message: '发送失败!'
+                            })
+                        }
+                    })
+                }
         
     }
 }

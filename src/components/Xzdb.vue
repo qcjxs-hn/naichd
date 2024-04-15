@@ -73,6 +73,7 @@
                     <el-link :underline="false"  style="font-size: 12px;" class="mx-1" type="primary">{{it.split(';')[0]+gml+it.split(';')[1]+gml2}}</el-link>
                 </el-col>
                         </el-row>
+                        <el-button @click="fsqc(it.split(';')[2])" type="primary"  style="margin-left: 40px;">发送取餐</el-button>
                     </div>
                     <div v-else>
                         <el-row>  
@@ -118,15 +119,22 @@ import { ElNotification } from 'element-plus'
             Link,
         },
         mounted() {
-          
+            this.jsq = setInterval(() => {
+                this.loadxzcgly();
+            }, 5000);
         },
+        beforeDestroy() {
+        clearInterval(this.jsq);
+    },
         created(){
+            
             this.loadxzcgly();
 
         },
         methods: {
             loadxzcgly(){
                 // 加载数据
+                this.dbuserz=[];
             this.userdl=JSON.parse(localStorage.getItem("user"));
             if(this.userdl!=null){
                 // 判断权限
@@ -162,7 +170,7 @@ import { ElNotification } from 'element-plus'
                                     this.data3 = res.data;
                                     for(var i=0;i<this.data3.length;i++){
                                         if(this.data3[i].sfzf=="1"){
-                                            this.dbuserz.push(this.data3[i].buyuser+';'+"奶茶");
+                                            this.dbuserz.push(this.data3[i].buyuser+';'+"奶茶"+';'+this.data3[i].createid);
                                             // this.ddtz();
                                         }
                                     }
@@ -187,15 +195,23 @@ import { ElNotification } from 'element-plus'
             tzdpdy(){
                 this.$router.push('/dystore');
             },
-              // 订单通知
-              ddtz(){
-                ElNotification({
-                    title: 'Success',
-                    message: 'This is a success message',
-                    type: 'success',
-                    duration: 0,
-                })
-            }
+    // 发送取餐
+    fsqc(ddid){
+                    request.post("/nc/fsqc?i="+ddid).then(res =>{
+                        if(res.code=='200'){
+                            this.$message({
+                                type: 'success',
+                                message: '发送成功!'
+                            })
+                            this.loadxzcgly();
+                        }else{
+                            this.$message({
+                                type: 'error',
+                                message: '发送失败!'
+                            })
+                        }
+                    })
+                }
         }
     }
 </script>

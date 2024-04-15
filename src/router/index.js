@@ -47,6 +47,26 @@ const routes=[
             path:'dystore',
             name:'Dystore',
             component:()=>import("../views/Storedypage.vue")
+        },{
+            path:'yhj',
+            name:'Yhj',
+            component:()=>import("../views/Yhjpage.vue")
+        },{
+            path:'gn',
+            name:'Gn',
+            component:()=>import("../views/Gnpage.vue")
+        },{
+            path:'mygn',
+            name:'Mygn',
+            component:()=>import("../views/Mygnpage.vue")
+        },{
+            path:'indexqyl',
+            name:'Indexqyl',
+            component:()=>import("../views/Indexqylpage.vue")
+        },{
+            path:'wj'
+            ,name:'Wj',
+            component:()=>import("../views/Wjpage.vue")
         }
         ]
     },

@@ -154,11 +154,13 @@ export default {
   created(){
     this.userdl = JSON.parse(localStorage.getItem("user"));
     // console.log(this.userdl);
+    if(this.userdl!=null){
     if(this.userdl.userzt==="3"){
       this.ljxs=true;
     }else{
       this.ljxs=false;
     }
+  }
   },
   methods:{
     tctx(){
