@@ -90,7 +90,7 @@ export default {
             if(this.userdl.userzt=='3'){
             request.get("/nc/superselall?u="+this.userdl.user).then(res =>{
                 if(res.code=='200'){
-                    // console.log(res);
+                    console.log(res);
                     this.dd=res.data;
                     this.onedd=this.dd[0];
                     if(JSON.parse(this.onedd.shoppingcar).length>1){
