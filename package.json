@@ -25,7 +25,7 @@
     "vue-router": "^4.3.0",
     "vue-stomp": "^0.0.5",
     "websocket": "^1.0.34",
-    "ws": "^8.16.0",
+    "ws": "^8.17.1",
     "xlsx": "^0.18.5"
   },
   "devDependencies": {
