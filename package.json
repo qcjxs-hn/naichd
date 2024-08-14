@@ -10,7 +10,7 @@
   "dependencies": {
     "@stomp/stompjs": "^7.0.0",
     "@vueuse/core": "^10.9.0",
-    "axios": "^1.6.7",
+    "axios": "^1.7.4",
     "canvas": "^2.11.2",
     "core-js": "^3.8.3",
     "date-fns": "^3.3.1",
